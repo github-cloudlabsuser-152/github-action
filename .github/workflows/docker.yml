@@ -34,22 +34,22 @@ jobs:
     - name: List files
       run: ls -la
 
-    # Build Docker image
-    - name: Build Docker image
+    # Login Step
+    - name: docker login
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    # Build Docker image
+    - name: Build Docker image
       env: 
         LOGIN_SERVER: ${{ vars.LOGIN_SERVER }}
       run: |
         docker buildx build . -t $LOGIN_SERVER/my-app:latest
 
     # Log in to Azure Container Registry
-    - name: Log in to Azure Container Registry    
-      with:
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - name: Log in to Azure Container Registry
       env:
         REGISTRY_NAME: ${{ vars.REGISTRY_NAME }}
       run: |
@@ -57,9 +57,6 @@ jobs:
 
     # Push Docker image to Azure Container Registry
     - name: Push Docker image
-      with:
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
       env:
         LOGIN_SERVER: ${{ vars.LOGIN_SERVER }}
       run: |
