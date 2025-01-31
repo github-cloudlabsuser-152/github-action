@@ -1,4 +1,3 @@
-#added line to debug the code - protection rules are not working
 name: Build and Push Docker Image to ACR
 
 on:
@@ -33,7 +32,7 @@ jobs:
     # List files in the current directory
     - name: List files
       run: ls -la
- 
+
     # Build Docker image
     - name: Build Docker image
       env: 
@@ -48,15 +47,6 @@ jobs:
       run: |
         az acr login --name $REGISTRY_NAME
 
-    # Docker Login Step
-    - name: docker login
-    uses: docker/login-action@v2
-    with:
-        #registry: ${{ vars.LOGIN_SERVER }}
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-
-    
     # Push Docker image to Azure Container Registry
     - name: Push Docker image
       env:
